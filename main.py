@@ -1,3 +1,4 @@
+import argparse
 import os
 
 import requests
@@ -18,14 +19,16 @@ def shorten_link(token, url):
 
 def main():
 
+    parser = argparse.ArgumentParser(
+        description="Программа создает битлинк длинной ссылки"
+    )
+    parser.add_argument('url', help="Ссылка, которую требуется сократить")
+    url_to_shorten = parser.parse_args()
+
     bitly_token = os.getenv("BITLY_TOKEN")
+
+    shorten_link(bitly_token, url_to_shorten.url)
+
     
-    url_to_shorten = "https://dvmn.org/modules/"
-
-    shorten_link(bitly_token, url_to_shorten)
-
-
-
 if __name__ == "__main__":
     main()
-    
