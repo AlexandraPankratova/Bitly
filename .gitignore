@@ -1,0 +1,8 @@
+#Ignore virtual environment files
+b_env/*
+
+#Ignore files with personal information
+.env
+
+#Ignore Python building catalogs
+__pycache__
