@@ -14,7 +14,14 @@ def main():
     }
     response_get = requests.get("https://api-ssl.bitly.com/v4/user", headers=headers)
 
-    print(response_get.text)
+    url_to_shorten = {
+        "long_url": "https://dvmn.org/modules/",
+    }
+
+    response_post = requests.post("https://api-ssl.bitly.com/v4/bitlinks", headers=headers, json=url_to_shorten)
+
+    print(response_get.json())
+    print(response_post.json()["id"])
 
 
 if __name__ == "__main__":
