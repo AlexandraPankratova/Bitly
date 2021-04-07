@@ -24,11 +24,15 @@ def main():
         description="Программа создает битлинк длинной ссылки"
     )
     parser.add_argument('url', help="Ссылка, которую требуется сократить")
-    url_to_shorten = parser.parse_args()
+    url_to_shorten = parser.parse_args().url
 
     bitly_token = os.getenv("BITLY_TOKEN")
 
-    print("Битлинк", shorten_link(bitly_token, url_to_shorten.url))
+    try:
+        bitly_link = shorten_link(bitly_token, url_to_shorten)
+        print("Битлинк", bitly_link)
+    except KeyError:
+        print("Ссылка введена неверно.")    
 
     
 if __name__ == "__main__":
