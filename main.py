@@ -5,23 +5,25 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+def shorten_link(token, url):
+    headers = {
+        "Authorization": token
+    }
+    long_url = {
+        "long_url": url
+    }
+    response = requests.post("https://api-ssl.bitly.com/v4/bitlinks", headers=headers, json=long_url)
+    print("Битлинк", response.json()["id"])
+
 
 def main():
 
     bitly_token = os.getenv("BITLY_TOKEN")
-    headers = {
-        "Authorization": bitly_token
-    }
-    response_get = requests.get("https://api-ssl.bitly.com/v4/user", headers=headers)
+    
+    url_to_shorten = "https://dvmn.org/modules/"
 
-    url_to_shorten = {
-        "long_url": "https://dvmn.org/modules/",
-    }
+    shorten_link(bitly_token, url_to_shorten)
 
-    response_post = requests.post("https://api-ssl.bitly.com/v4/bitlinks", headers=headers, json=url_to_shorten)
-
-    print(response_get.json())
-    print(response_post.json()["id"])
 
 
 if __name__ == "__main__":
