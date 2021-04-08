@@ -14,13 +14,13 @@ def shorten_link(token, url):
     headers = {
         "Authorization": token
     }
-    long_url = {
+    payload = {
         "long_url": url
     }
     response = requests.post(
         "https://api-ssl.bitly.com/v4/bitlinks",
         headers=headers,
-        json=long_url,
+        json=payload,
     )
     bitlink = response.json()["id"]
     return bitlink
