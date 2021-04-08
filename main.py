@@ -3,11 +3,21 @@ import os
 
 import requests
 from dotenv import load_dotenv
-from urllib.parse import urlparse
 
 
-def check_url(url):
-    return urlparse(url).scheme == ""
+def check_url(token, url):
+    headers = {
+        "Authorization": token
+    }
+    try:
+        response = requests.get(
+            "https://api-ssl.bitly.com/v4/bitlinks/{}".format(url),
+            headers=headers,
+        )
+        decoded_response = response.json()
+        return any(decoded_response["id"])
+    except ValueError:
+        return False
 
 
 def shorten_link(token, url):
@@ -22,11 +32,11 @@ def shorten_link(token, url):
         headers=headers,
         json=payload,
     )
-    
+
     decoded_response = response.json()
     if 'error' in decoded_response:
         raise requests.exceptions.HTTPError(decoded_response['error'])
-    
+
     response.raise_for_status()
     bitlink = decoded_response["id"]
     return bitlink
@@ -42,11 +52,11 @@ def count_clicks(token, bitlink):
         ),
         headers=headers,
     )
-    
-    decoded_response = response.json()    
+
+    decoded_response = response.json()
     if 'error' in decoded_response:
         raise requests.exceptions.HTTPError(decoded_response['error'])
-    
+
     response.raise_for_status()
     return decoded_response["total_clicks"]
 
@@ -65,7 +75,7 @@ def main():
     bitly_token = os.getenv("BITLY_TOKEN")
 
     try:
-        if check_url(entered_url):
+        if check_url(bitly_token, entered_url):
             amount_of_clicks = count_clicks(bitly_token, entered_url)
             print("Было соверешено следующее количество кликов: {}.".format(
                 amount_of_clicks
