@@ -5,8 +5,6 @@ import requests
 from dotenv import load_dotenv
 from urllib.parse import urlparse
 
-load_dotenv()
-
 
 def check_url(url):
     return urlparse(url).scheme == ""
@@ -43,6 +41,8 @@ def count_clicks(token, bitlink):
 
 def main():
 
+    load_dotenv()
+
     parser = argparse.ArgumentParser(
         description="Программа создает битлинк длинной ссылки \
         или выводит кол-во кликов для битлинка"
@@ -55,7 +55,7 @@ def main():
     try:
         if check_url(entered_url):
             amount_of_clicks = count_clicks(bitly_token, entered_url)
-            print("Было соверешно следующее количество кликов: {}.".format(
+            print("Было соверешено следующее количество кликов: {}.".format(
                 amount_of_clicks
             ))
         else:
