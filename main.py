@@ -22,7 +22,13 @@ def shorten_link(token, url):
         headers=headers,
         json=payload,
     )
-    bitlink = response.json()["id"]
+    
+    decoded_response = response.json()
+    if 'error' in decoded_response:
+        raise requests.exceptions.HTTPError(decoded_response['error'])
+    
+    response.raise_for_status()
+    bitlink = decoded_response["id"]
     return bitlink
 
 
@@ -36,7 +42,13 @@ def count_clicks(token, bitlink):
         ),
         headers=headers,
     )
-    return response.json()["total_clicks"]
+    
+    decoded_response = response.json()    
+    if 'error' in decoded_response:
+        raise requests.exceptions.HTTPError(decoded_response['error'])
+    
+    response.raise_for_status()
+    return decoded_response["total_clicks"]
 
 
 def main():
@@ -61,7 +73,7 @@ def main():
         else:
             bitlink = shorten_link(bitly_token, entered_url)
             print("Битлинк {}.".format(bitlink))
-    except KeyError:
+    except requests.exceptions.HTTPError:
         print("Ссылка введена неверно.")
 
 
