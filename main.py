@@ -34,8 +34,8 @@ def shorten_link(token, url):
     )
 
     decoded_response = response.json()
-    if 'error' in decoded_response:
-        raise requests.exceptions.HTTPError(decoded_response['error'])
+    if "error" in decoded_response:
+        raise requests.exceptions.HTTPError(decoded_response["error"])
 
     response.raise_for_status()
     bitlink = decoded_response["id"]
@@ -54,8 +54,8 @@ def count_clicks(token, bitlink):
     )
 
     decoded_response = response.json()
-    if 'error' in decoded_response:
-        raise requests.exceptions.HTTPError(decoded_response['error'])
+    if "error" in decoded_response:
+        raise requests.exceptions.HTTPError(decoded_response["error"])
 
     response.raise_for_status()
     return decoded_response["total_clicks"]
@@ -69,7 +69,7 @@ def main():
         description="Программа создает битлинк длинной ссылки \
         или выводит кол-во кликов для битлинка"
     )
-    parser.add_argument('url', help="Ссылка")
+    parser.add_argument("url", help="Ссылка")
     entered_url = parser.parse_args().url
 
     bitly_token = os.getenv("BITLY_TOKEN")
