@@ -12,28 +12,24 @@ def check_url(token, url):
     response = requests.get(
             "https://api-ssl.bitly.com/v4/bitlinks/{}".format(url),
             headers=headers,
-        )
+    )
     return response.ok
 
 
 def shorten_link(token, url):
     headers = {
-        "Authorization": token
+        "Authorization": token,
     }
     payload = {
-        "long_url": url
+        "long_url": url,
     }
     response = requests.post(
         "https://api-ssl.bitly.com/v4/bitlinks",
         headers=headers,
         json=payload,
     )
-
-    decoded_response = response.json()
-    if "error" in decoded_response:
-        raise requests.exceptions.HTTPError(decoded_response["error"])
-
     response.raise_for_status()
+    decoded_response = response.json()
     bitlink = decoded_response["id"]
     return bitlink
 
@@ -44,16 +40,12 @@ def count_clicks(token, bitlink):
     }
     response = requests.get(
         "https://api-ssl.bitly.com/v4/bitlinks/{}/clicks/summary".format(
-            bitlink
+            bitlink,
         ),
         headers=headers,
     )
-
-    decoded_response = response.json()
-    if "error" in decoded_response:
-        raise requests.exceptions.HTTPError(decoded_response["error"])
-
     response.raise_for_status()
+    decoded_response = response.json()
     return decoded_response["total_clicks"]
 
 
@@ -74,7 +66,7 @@ def main():
         if check_url(bitly_token, entered_url):
             amount_of_clicks = count_clicks(bitly_token, entered_url)
             print("Было соверешено следующее количество кликов: {}.".format(
-                amount_of_clicks
+                amount_of_clicks,
             ))
         else:
             bitlink = shorten_link(bitly_token, entered_url)
