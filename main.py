@@ -9,15 +9,11 @@ def check_url(token, url):
     headers = {
         "Authorization": token
     }
-    try:
-        response = requests.get(
+    response = requests.get(
             "https://api-ssl.bitly.com/v4/bitlinks/{}".format(url),
             headers=headers,
         )
-        decoded_response = response.json()
-        return any(decoded_response["id"])
-    except ValueError:
-        return False
+    return response.ok
 
 
 def shorten_link(token, url):
