@@ -10,8 +10,8 @@ def check_url(token, url):
         "Authorization": token
     }
     response = requests.get(
-            "https://api-ssl.bitly.com/v4/bitlinks/{}".format(url),
-            headers=headers,
+        "https://api-ssl.bitly.com/v4/bitlinks/{}".format(url),
+        headers=headers,
     )
     return response.ok
 
